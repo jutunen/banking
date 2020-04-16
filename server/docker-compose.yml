@@ -1,0 +1,15 @@
+version: '3'
+services:
+  app:
+    container_name: banking-mongoose
+    restart: always
+    build: .
+    ports:
+      - '5000:5000'
+    links:
+      - mongou
+  mongou:
+    container_name: mongou
+    image: mongo
+    volumes:
+      - /home/ubuntu/mongovolume:/data/db
