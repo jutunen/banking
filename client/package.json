@@ -15,6 +15,7 @@
     "ignore-styles": "^5.0.1",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
+    "react-google-recaptcha": "^2.1.0",
     "react-scripts": "3.4.0",
     "react-spinners-css": "^1.1.7",
     "react-spring": "^8.0.27"

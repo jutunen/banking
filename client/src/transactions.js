@@ -140,7 +140,6 @@ export function TransactionsForm(props) {
       if(!props.accessToken || props.requestIsPending) {
         return;
       }
-      //console.log("Fetching!");
       props.setRequestIsPending(true);
       try {
         const result = await axios.get(`${urlPrefix}user/transactions/${skip}/${limit}`,
@@ -150,11 +149,9 @@ export function TransactionsForm(props) {
                                           },
                                           timeout: timeout
                                         });
-        //console.log(result);
         setCount(result.data.count);
         setTransactions(result.data.transactions);
       } catch (err) {
-        //console.log(err);
         if(!err.response) {
           props.setRequestIsPending(false);
           props.showMsg(ERR.MSG_CONN_FAILED);
@@ -166,7 +163,6 @@ export function TransactionsForm(props) {
           return;
         }
         if(err.response.data === ERR.TOKEN_EXPIRED) {
-          //console.log("token expired!");
           props.tokenExpirationHandler();
         }
         return;

@@ -1,11 +1,12 @@
 const bcrypt = require("bcrypt");
 const jwt = require('jsonwebtoken');
 const mongoose = require("mongoose");
-const tokenSecret = "_seOnSalai$uus!";
-const tokenExpirationTime = 60; // seconds
-//const adminPasswordHash = '$2b$10$Zs1db/75PHRVkemj5kbN4eaFTZcAOy.6ClHHcNhSBEuQLYaVJwSbK'; // longer and safer
-const adminPasswordHash = '$2b$10$SNWmynGCP8X9YSkOZ7qI3u7/96Dm5osN.gvtLplnp1.eYuN/3F0Mm'; // shorter and unsafe
-const adminUsername = 'admin';
+const axios = require('axios');
+
+const tokenSecret = "add_good_secret_here";
+const tokenExpirationTime = 600; // seconds
+const adminPasswordHash = '';
+const adminUsername = '';
 
 import { Account, Transaction } from "./models.js";
 import { TR_WITHDRAWAL, TR_DEPOSIT, TR_TRANSFER } from "./models.js";
@@ -144,7 +145,24 @@ export async function handleBalanceReq(id, res) {
 }
 
 export async function handleNewUserReq(request, res) {
-    let { name, deposit, passwd } = request;
+
+    let { name, deposit, passwd, token } = request;
+
+    let verification = await axios({
+      method: 'post',
+      url: 'https://www.google.com/recaptcha/api/siteverify',
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      data: `secret=add_secret_key_here&response=${token}`
+      });
+
+    console.log("verification:");
+    console.log(verification.data);
+
+    if(!verification.data.success) {
+      res.status(401).send("");
+      return;
+    }
+
     const existingIds = await Account.distinct("id").exec();
     const newId = generateId(existingIds);
 

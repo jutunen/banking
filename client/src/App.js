@@ -42,47 +42,22 @@ function App() {
     return () => window.removeEventListener("hashchange", router);
   },[]);
 
-  useEffect(() => {
-    // subscribe to hash changes
-    window.addEventListener("popstate", poplistener);
-    return () => window.removeEventListener("popstate", poplistener);
-  });
-
-  function poplistener(event) {
-    //console.log("poplistener: ");
-    console.log(event);
-  }
-
-  // HOX! setView must be called from within router only!
-  // Outside router the view is changed by assigning it to window.location.hash
-  // Assigning to window.location.hash will trigger hashchange event,
-  // which will be handled by router function
-  // PROBLEEMA: joskus harvoin ilmeisesti eventListener on poistettu useEffectin toimesta
-  // niin että hashchange eventti jää kuulematta ja router kutsumatta, selaimen urli
-  // päivittyy kyllä
   function router() {
-    console.log("view on hashchange: " + view);
-    console.log("The hash changed, new hash: " + window.location.hash);
-    //console.log("window.location.pathname: " + window.location.pathname);
-
     const newView = window.location.hash.replace(/^#/, "");
 
     if(ID.VIEWS.includes(newView) && newView !== ID.VIEW_AUTH && newView !== ID.VIEW_REGIST) {
       if(accessTokenRef.current) {
-        console.log("accessToken is valid!");
-        /*if(requestIsPending) {
-          return; //
-        }*/
+        //console.log("accessToken is valid!");
         setView(newView);
       } else {
         resetInputs();
-        console.log("accessToken is invalid!");
+        //console.log("accessToken is invalid!");
         window.location.hash = ID.VIEW_AUTH;
         showMsg("You must login to proceed!");
       }
     } else if (newView === ID.VIEW_AUTH || newView === ID.VIEW_REGIST) {
       resetInputs();
-      console.log("setting accessToken invalid!");
+      //console.log("setting accessToken invalid!");
       setAccessToken("");
       setView(newView);
     } else {
@@ -109,7 +84,6 @@ function App() {
       return;
     }
 
-    console.log("setting window.location.hash to deposit:");
     window.location.hash = ID.VIEW_DEPOSIT;
     setBalance(response.balance);
     setUserName(response.name);

@@ -2,8 +2,8 @@
 import * as ERR from "./errors.js";
 import axios from 'axios';
 
-//export const urlPrefix = 'https://jussin.site/bankkiapi/';
-export const urlPrefix = 'http://localhost:5000/';
+export const urlPrefix = 'https://jussin.site/bankkiapi/';
+//export const urlPrefix = 'http://localhost:5000/';
 export const timeout = 6000 // milliseconds
 
 export function sendRequest(method, urlEnding, data, respHandler, token, tokenExpirationHandler) {
@@ -16,16 +16,11 @@ export function sendRequest(method, urlEnding, data, respHandler, token, tokenEx
     timeout: timeout
   })
   .then(function (response) {
-    //console.log("response.status:");
-    //console.log(response.status);
     respHandler(response.data);
   })
   .catch(function (error) {
-    console.log(error);
-    //console.log(error.response);
     if(error.response) {
       if(error.response.data === ERR.TOKEN_EXPIRED) {
-        //console.log("token expired!");
         tokenExpirationHandler();
       } else {
         respHandler(null, error.response.data);

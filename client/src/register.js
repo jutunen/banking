@@ -5,6 +5,7 @@ import * as ERR from "./errors.js";
 import base64url from "base64url";
 import * as store from "./restful-io.js";
 import {loremIpsum} from "./login.js";
+import ReCAPTCHA from "react-google-recaptcha";
 
 export function RegForm(props) {
 
@@ -14,6 +15,8 @@ export function RegForm(props) {
   const [regPasswd,setRegPasswd] = useState("");
   const [regInitDeposit,setRegInitDeposit] = useState("");
 
+  const recaptchaRef = React.useRef(null);
+
   function handleRegInput(id, event) {
 
     if(props.requestIsPending) {
@@ -22,8 +25,6 @@ export function RegForm(props) {
 
     if(id === ID.BTN_REG_BACK) {
       window.location.hash = ID.VIEW_AUTH;
-    } else if (id === ID.BTN_REG_REG) {
-      initiateNewUserRegistration();
     } else if (id === ID.INP_REG_NAME) {
       setRegName(event.target.value);
     } else if (id === ID.INP_REG_PASSWD) {
@@ -33,26 +34,35 @@ export function RegForm(props) {
     }
   };
 
-  function initiateNewUserRegistration() {
+  function initiateNewUserRegistration(token) {
 
     if (regName.length === 0) {
       props.showMsg("Name is missing!\nAdd name!");
+      recaptchaRef.current.reset();
       return;
     }
 
     if (regPasswd.length === 0) {
       props.showMsg("Password is missing!\nAdd password!");
+      recaptchaRef.current.reset();
       return;
     }
 
     if (regInitDeposit.length > 0) {
       if (isNaN(Number(regInitDeposit))) {
         props.showMsg("Invalid deposit!\nCheck deposit!");
+        recaptchaRef.current.reset();
         return;
       }
     }
 
-    store.sendRequest("post", "user", {name:regName, deposit:regInitDeposit.length > 0 ? Number(regInitDeposit) : 0, passwd:regPasswd}, handleNewUserRegistrationResponse);
+    const data = { name:regName,
+                   deposit:regInitDeposit.length > 0 ? Number(regInitDeposit) : 0,
+                   passwd:regPasswd,
+                   token };
+
+    store.sendRequest("post", "user", data, handleNewUserRegistrationResponse);
+    recaptchaRef.current.reset();
     props.setRequestIsPending(true);
   }
 
@@ -84,7 +94,13 @@ export function RegForm(props) {
   return (
     <>
       {loremIpsum()}
-      <div className="authCont">
+      <form className="authCont" onSubmit={(e) => { e.preventDefault(); recaptchaRef.current.execute(); }}>
+        <ReCAPTCHA
+          ref={recaptchaRef}
+          size="invisible"
+          sitekey="add_site_key_here"
+          onChange={initiateNewUserRegistration}
+        />
         <div className="authFormCont">
           <div>Registration</div>
           <input
@@ -111,12 +127,7 @@ export function RegForm(props) {
           />
         </div>
         <div className="buttonsCont">
-          <button
-            type="button"
-            className="button"
-            onClick={ev => handleRegInput(ID.BTN_REG_REG, ev)}>
-            Register
-          </button>
+          <input className="button" type="submit" value="Register" />
           <button
             type="button"
             className="button"
@@ -124,7 +135,7 @@ export function RegForm(props) {
             Cancel
           </button>
         </div>
-      </div>
+      </form>
     </>
   );
 }
