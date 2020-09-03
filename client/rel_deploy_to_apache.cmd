@@ -1,6 +1,6 @@
 USERNAME=ubuntu
 KEYFILE=~/avvaimet.pem
-SERVER=
+SERVER=ec2-13-48-45-90.eu-north-1.compute.amazonaws.com
 PORT=22
 SERVER_DIR=/var/www/loremipsum
 FILENAME=build.tar
