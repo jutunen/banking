@@ -1,0 +1,16 @@
+export:
+pg_dump jussi > jussi.dump
+import:
+psql -U jussi jussi < jussi.dump
+
+curl -d "name=jussi&passwd=jussi" -X POST http://127.0.0.1:5000/user/user
+curl -d "id=1" -X POST http://127.0.0.1:5000/user/create_account
+curl -d "id=1&deposit=300" -X PATCH http://127.0.0.1:5000/user/deposit
+curl -d "id=1&withdrawal=100" -X PATCH http://127.0.0.1:5000/user/withdrawal
+curl -d "fromAccount=1&toAccount=2&amount=100" -X PATCH http://127.0.0.1:5000/user/transfer
+
+curl -H "Authorization: Bearer eyJhbGc......6nutreRtu--rc" http://127.0.0.1:5000/user/accounts
+
+SELECT account_id, amount, date, 'deposit' as "type", '' as "destination" FROM deposits WHERE (deposits.account_id=1) UNION SELECT account_id, amount, date, 'withdrawal' as "type", '' as "destination" FROM withdrawals WHERE (withdrawals.account_id=1) UNION SELECT from_account as "account_id", amount, date, 'transfer out' as "type", '' as "destination" FROM transfers WHERE (transfers.from_account=1) UNION SELECT to_account as "account_id", amount, date, 'transfer in' as "type", '' as "destination" FROM transfers WHERE (transfers.to_account=1) ORDER BY date;
+
+SELECT transfers.amount, transfers.date, customers.name as "to", cus.name as "from" FROM transfers INNER JOIN accounts on (transfers.to_account = accounts.account_id) INNER JOIN customers on (accounts.customer_id = customers.customer_id) INNER JOIN accounts as ac on (transfers.from_account = ac.account_id) INNER JOIN customers as cus on (ac.customer_id = cus.customer_id);

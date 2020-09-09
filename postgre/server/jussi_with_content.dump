@@ -1,0 +1,352 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 12.4 (Ubuntu 12.4-0ubuntu0.20.04.1)
+-- Dumped by pg_dump version 12.4 (Ubuntu 12.4-0ubuntu0.20.04.1)
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
+
+--
+-- Name: accounts; Type: TABLE; Schema: public; Owner: jussi
+--
+
+CREATE TABLE public.accounts (
+    account_id integer NOT NULL,
+    customer_id integer NOT NULL,
+    balance numeric(12,2) NOT NULL
+);
+
+
+ALTER TABLE public.accounts OWNER TO jussi;
+
+--
+-- Name: accounts_account_id_seq; Type: SEQUENCE; Schema: public; Owner: jussi
+--
+
+CREATE SEQUENCE public.accounts_account_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.accounts_account_id_seq OWNER TO jussi;
+
+--
+-- Name: accounts_account_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: jussi
+--
+
+ALTER SEQUENCE public.accounts_account_id_seq OWNED BY public.accounts.account_id;
+
+
+--
+-- Name: customers; Type: TABLE; Schema: public; Owner: jussi
+--
+
+CREATE TABLE public.customers (
+    customer_id integer NOT NULL,
+    name text NOT NULL,
+    pw_hash text NOT NULL
+);
+
+
+ALTER TABLE public.customers OWNER TO jussi;
+
+--
+-- Name: customers_customer_id_seq; Type: SEQUENCE; Schema: public; Owner: jussi
+--
+
+CREATE SEQUENCE public.customers_customer_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.customers_customer_id_seq OWNER TO jussi;
+
+--
+-- Name: customers_customer_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: jussi
+--
+
+ALTER SEQUENCE public.customers_customer_id_seq OWNED BY public.customers.customer_id;
+
+
+--
+-- Name: ta_types; Type: TABLE; Schema: public; Owner: jussi
+--
+
+CREATE TABLE public.ta_types (
+    type_id integer NOT NULL,
+    type_descr text NOT NULL
+);
+
+
+ALTER TABLE public.ta_types OWNER TO jussi;
+
+--
+-- Name: ta_types_type_id_seq; Type: SEQUENCE; Schema: public; Owner: jussi
+--
+
+CREATE SEQUENCE public.ta_types_type_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.ta_types_type_id_seq OWNER TO jussi;
+
+--
+-- Name: ta_types_type_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: jussi
+--
+
+ALTER SEQUENCE public.ta_types_type_id_seq OWNED BY public.ta_types.type_id;
+
+
+--
+-- Name: transactions; Type: TABLE; Schema: public; Owner: jussi
+--
+
+CREATE TABLE public.transactions (
+    transaction_id integer NOT NULL,
+    type integer NOT NULL,
+    to_account integer,
+    from_account integer,
+    amount numeric(12,2) NOT NULL,
+    date timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.transactions OWNER TO jussi;
+
+--
+-- Name: transactions_transaction_id_seq; Type: SEQUENCE; Schema: public; Owner: jussi
+--
+
+CREATE SEQUENCE public.transactions_transaction_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.transactions_transaction_id_seq OWNER TO jussi;
+
+--
+-- Name: transactions_transaction_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: jussi
+--
+
+ALTER SEQUENCE public.transactions_transaction_id_seq OWNED BY public.transactions.transaction_id;
+
+
+--
+-- Name: accounts account_id; Type: DEFAULT; Schema: public; Owner: jussi
+--
+
+ALTER TABLE ONLY public.accounts ALTER COLUMN account_id SET DEFAULT nextval('public.accounts_account_id_seq'::regclass);
+
+
+--
+-- Name: customers customer_id; Type: DEFAULT; Schema: public; Owner: jussi
+--
+
+ALTER TABLE ONLY public.customers ALTER COLUMN customer_id SET DEFAULT nextval('public.customers_customer_id_seq'::regclass);
+
+
+--
+-- Name: ta_types type_id; Type: DEFAULT; Schema: public; Owner: jussi
+--
+
+ALTER TABLE ONLY public.ta_types ALTER COLUMN type_id SET DEFAULT nextval('public.ta_types_type_id_seq'::regclass);
+
+
+--
+-- Name: transactions transaction_id; Type: DEFAULT; Schema: public; Owner: jussi
+--
+
+ALTER TABLE ONLY public.transactions ALTER COLUMN transaction_id SET DEFAULT nextval('public.transactions_transaction_id_seq'::regclass);
+
+
+--
+-- Data for Name: accounts; Type: TABLE DATA; Schema: public; Owner: jussi
+--
+
+COPY public.accounts (account_id, customer_id, balance) FROM stdin;
+10	1	1000.00
+13	4	500.00
+11	2	3200.00
+12	3	3500.00
+21	24	0.00
+\.
+
+
+--
+-- Data for Name: customers; Type: TABLE DATA; Schema: public; Owner: jussi
+--
+
+COPY public.customers (customer_id, name, pw_hash) FROM stdin;
+1	jussi	$2b$10$fPLstV2kUb2SwD2vh291E.s3m6dQIoj3ndWcGf16GuecYPoEKGJo2
+2	petteri	$2b$10$HbLgtT6wGMZ3RWBo5vAyrOB7mvCu3SBbgKDF2gf7GGBmYz2OVqruG
+3	esko	$2b$10$bWdRqhhuKAINPfn8F6Xp7eVfq3EBdAIDgbyI9Naqxn4QcbjdDURWW
+4	maija	$2b$10$76V9MA/8YowV93mWUIk9L.CDdGmztaiwqgnisAq9zkiC7X.2oS.aG
+24	Markku	$2b$10$O9ZWPiOmlM75prrU3/dPx.9lB/xRkxCUvaR0uAcBYD99yAq0rIhoa
+\.
+
+
+--
+-- Data for Name: ta_types; Type: TABLE DATA; Schema: public; Owner: jussi
+--
+
+COPY public.ta_types (type_id, type_descr) FROM stdin;
+1	deposit
+2	withdrawal
+3	transfer
+\.
+
+
+--
+-- Data for Name: transactions; Type: TABLE DATA; Schema: public; Owner: jussi
+--
+
+COPY public.transactions (transaction_id, type, to_account, from_account, amount, date) FROM stdin;
+1	1	10	\N	1000.00	2020-09-01 18:11:21.6201
+2	1	11	\N	2000.00	2020-09-01 18:11:39.698263
+3	1	12	\N	3000.00	2020-09-01 18:11:49.685677
+4	1	13	\N	4000.00	2020-09-01 18:12:00.456054
+5	2	\N	12	300.00	2020-09-01 18:22:10.227526
+6	3	13	10	500.00	2020-09-01 18:22:51.777784
+7	1	10	\N	4000.00	2020-09-01 18:27:09.880582
+8	3	12	11	900.00	2020-09-01 18:28:00.870593
+9	3	13	12	200.00	2020-09-01 21:14:39.249209
+10	3	11	12	400.00	2020-09-01 21:15:02.602939
+11	3	11	10	700.00	2020-09-01 21:15:48.023658
+12	2	\N	10	200.00	2020-09-01 21:16:41.305585
+13	2	\N	11	250.00	2020-09-01 21:16:52.054128
+14	2	\N	12	300.00	2020-09-01 21:17:07.831937
+15	2	\N	13	350.00	2020-09-01 21:17:20.246356
+16	1	11	\N	450.00	2020-09-01 21:18:14.360292
+17	3	11	13	800.00	2020-09-01 21:19:22.580435
+18	1	12	\N	800.00	2020-09-01 21:20:00.359929
+20	1	10	\N	400.00	2020-09-07 16:18:23.629329
+21	2	\N	10	500.00	2020-09-07 16:51:36.775828
+22	3	13	10	450.00	2020-09-07 17:45:40.231606
+23	2	\N	10	50.00	2020-09-08 22:16:01.562077
+24	1	10	\N	1000.00	2020-09-08 22:38:08.021995
+25	3	10	13	2000.00	2020-09-09 00:42:08.709653
+26	2	\N	10	1000.00	2020-09-09 00:42:55.27559
+27	3	13	10	4000.00	2020-09-09 15:02:48.229645
+28	2	\N	13	5500.00	2020-09-09 15:03:39.657422
+\.
+
+
+--
+-- Name: accounts_account_id_seq; Type: SEQUENCE SET; Schema: public; Owner: jussi
+--
+
+SELECT pg_catalog.setval('public.accounts_account_id_seq', 30, true);
+
+
+--
+-- Name: customers_customer_id_seq; Type: SEQUENCE SET; Schema: public; Owner: jussi
+--
+
+SELECT pg_catalog.setval('public.customers_customer_id_seq', 33, true);
+
+
+--
+-- Name: ta_types_type_id_seq; Type: SEQUENCE SET; Schema: public; Owner: jussi
+--
+
+SELECT pg_catalog.setval('public.ta_types_type_id_seq', 3, true);
+
+
+--
+-- Name: transactions_transaction_id_seq; Type: SEQUENCE SET; Schema: public; Owner: jussi
+--
+
+SELECT pg_catalog.setval('public.transactions_transaction_id_seq', 28, true);
+
+
+--
+-- Name: accounts pk_accounts; Type: CONSTRAINT; Schema: public; Owner: jussi
+--
+
+ALTER TABLE ONLY public.accounts
+    ADD CONSTRAINT pk_accounts PRIMARY KEY (account_id);
+
+
+--
+-- Name: customers pk_customers; Type: CONSTRAINT; Schema: public; Owner: jussi
+--
+
+ALTER TABLE ONLY public.customers
+    ADD CONSTRAINT pk_customers PRIMARY KEY (customer_id);
+
+
+--
+-- Name: ta_types pk_ta_types; Type: CONSTRAINT; Schema: public; Owner: jussi
+--
+
+ALTER TABLE ONLY public.ta_types
+    ADD CONSTRAINT pk_ta_types PRIMARY KEY (type_id);
+
+
+--
+-- Name: accounts fk_accounts_customer_id; Type: FK CONSTRAINT; Schema: public; Owner: jussi
+--
+
+ALTER TABLE ONLY public.accounts
+    ADD CONSTRAINT fk_accounts_customer_id FOREIGN KEY (customer_id) REFERENCES public.customers(customer_id);
+
+
+--
+-- Name: transactions fk_transactions_from_account; Type: FK CONSTRAINT; Schema: public; Owner: jussi
+--
+
+ALTER TABLE ONLY public.transactions
+    ADD CONSTRAINT fk_transactions_from_account FOREIGN KEY (from_account) REFERENCES public.accounts(account_id);
+
+
+--
+-- Name: transactions fk_transactions_to_account; Type: FK CONSTRAINT; Schema: public; Owner: jussi
+--
+
+ALTER TABLE ONLY public.transactions
+    ADD CONSTRAINT fk_transactions_to_account FOREIGN KEY (to_account) REFERENCES public.accounts(account_id);
+
+
+--
+-- Name: transactions fk_transactions_type; Type: FK CONSTRAINT; Schema: public; Owner: jussi
+--
+
+ALTER TABLE ONLY public.transactions
+    ADD CONSTRAINT fk_transactions_type FOREIGN KEY (type) REFERENCES public.ta_types(type_id);
+
+
+--
+-- PostgreSQL database dump complete
+--
+
