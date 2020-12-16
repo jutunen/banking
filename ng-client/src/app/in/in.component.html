@@ -1,0 +1,50 @@
+<div class="appCont" style="flex-direction: column">
+
+  <div class="menuCont">
+    <button
+      type="button"
+      class="button"
+      [ngClass]="{'selected_button' : location === '/in/deposit'}"
+      (click)="navigateToDeposit()"
+    >
+      Deposit
+    </button>
+    <button
+      type="button"
+      class="button"
+      [ngClass]="{'selected_button' : location === '/in/withdraw'}"
+      (click)="navigateToWithdraw()"
+    >
+      Withdraw
+    </button>
+    <button
+      type="button"
+      class="button"
+      [ngClass]="{'selected_button' : location === '/in/transfer'}"
+      (click)="navigateToTransfer()"
+    >
+      Transfer
+    </button>
+    <button
+      type="button"
+      class="button"
+      [ngClass]="{'selected_button' : location === '/in/transactions'}"
+      (click)="navigateToTransactions()"
+    >
+      Transactions
+    </button>
+    <div className="balance">
+      Balance: {{balance}}
+    </div>
+    <button
+      type="button"
+      class="button"
+      (click)="handleLogout()"
+    >
+      Logout
+    </button>
+  </div>
+
+  <router-outlet></router-outlet>
+  <div class="footer">You're logged in with account ID {{accountId}}</div> 
+</div>

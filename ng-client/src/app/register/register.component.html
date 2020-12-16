@@ -1,0 +1,39 @@
+<form [formGroup]="registerForm" (ngSubmit)="onSubmit(registerForm.value)" class="login_container">
+  <div class="login_form_container">
+    <div>Registration</div>
+    <input
+      type="text"
+      class="width160px"
+      placeholder="Full name"
+      id="name"
+      formControlName="name"
+    />
+    <input
+      type="password"
+      class="width160px"
+      placeholder="Password"
+      id="password"
+      formControlName="password"
+    />
+    <input
+      type="text"
+      class="width160px"
+      placeholder="Initial cash deposit"
+      maxLength="6"
+      id="deposit"
+      formControlName="deposit"
+    />
+  </div>
+  <div class="buttons_container">
+    <input
+      class="button"
+      type="submit"
+      value="Register"
+    />
+    <button type="button" class="button">
+      <a routerLink="../login">
+        Cancel
+      </a>
+    </button>
+  </div>
+</form>

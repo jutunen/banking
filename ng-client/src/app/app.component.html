@@ -1,0 +1,12 @@
+<div
+  id="spinner"
+  class="progress"
+  [ngStyle]="spinnerIsVisible && { display: 'inline-block' }"
+>
+  <div>Loading...</div>
+</div>
+<div class="mainCont">
+  <div class="heading">Lorem Ipsum Banking</div>
+  <router-outlet></router-outlet>
+</div>
+<app-modal></app-modal>

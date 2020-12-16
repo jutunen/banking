@@ -1,0 +1,21 @@
+  <div class="depositSubCont">
+    <div class="depositSubSubCont">
+      Hello, let's deposit some money into your account.
+    </div>
+    <div class="depositSubSubCont">
+      <input
+        class="rightMargin20px"
+        type="text"
+        placeholder="Amount"
+        maxLength="6"
+        [(ngModel)]="deposit"
+      />
+      <button
+        type="button"
+        class="button"
+        (click)="handleDeposit()"
+      >
+        Submit
+      </button>
+    </div>
+  </div>

@@ -1,0 +1,51 @@
+:host {
+  width: 900px;
+  height: 390px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+div#tableControl {
+  width: 140px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+div#tableControlsContainer{
+  display:flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 220px;
+}
+
+div.arrowContainer:hover {
+  cursor: pointer;
+}
+
+.arrow:hover path {
+  fill: black;
+}
+
+div#count {
+  padding: 5px;
+}
+
+table#transactions {
+  background-color: white;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding-left: 15px;
+  padding-right: 15px;
+  text-align: center;
+  border: 1px solid black;
+}
+
+td {
+  font-weight: normal;
+}

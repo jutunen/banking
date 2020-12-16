@@ -1,0 +1,47 @@
+<div id="tableControlsContainer">
+  <div id="tableControl">
+    <div
+      tabIndex="0"
+      class="arrowContainer"
+      (click)="prevPage()"
+    >
+      <svg class="arrow" height="15" width="25">
+        <path d="M0 7.5 L0 7.5 L0 0 L25 7.5 L0 15 L0 7.5 L0 7.5 Z" fill="gray" transform="rotate(180,12.5,7.5)" />
+      </svg>
+    </div>
+    <div id="count">
+      {{page}} / {{pages}}
+    </div>
+    <div
+      tabIndex="0"
+      class="arrowContainer"
+      (click)="nextPage()"
+    >
+      <svg class="arrow" height="15" width="25">
+        <path d="M0 7.5 L0 7.5 L0 0 L25 7.5 L0 15 L0 7.5 L0 7.5 Z" fill="gray" />
+      </svg>
+    </div>
+  </div>
+  <div>
+  <select [ngModel]="page" (change)="getTransactions($event.target.value)" id="selectTableControl">
+    <option *ngFor="let x of pageArray" value={{x}}>{{x}}</option>
+  </select>
+  </div>
+</div>
+
+<table id="transactions">
+  <tbody>
+    <tr>
+      <th>Date</th>
+      <th>Transaction</th>
+      <th>Amount</th>
+      <th>Account ID</th>
+    </tr>
+    <tr *ngFor="let x of transactions">
+      <td>{{x.date|formatDate}}</td>
+      <td>{{getTransactionType(x)}}</td>
+      <td>{{x.amount}}</td>
+      <td>{{getAccountId(x)}}</td>
+    </tr>
+  </tbody>
+</table>

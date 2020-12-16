@@ -1,0 +1,35 @@
+<div class="login_container">
+  <div class="login_form_container">
+    <div>Login</div>
+    <input
+      type="text"
+      class="width160px"
+      placeholder="Account ID"
+      name="uid"
+      #accountId
+      value="1"
+    />
+    <input
+      type="password"
+      class="width160px"
+      placeholder="Password"
+      name="pwd"
+      #password
+      value="jussi"
+    />
+  </div>
+  <div class="buttons_container">
+    <button
+      type="button"
+      class="button"
+      (click)="loginClickHandler(accountId.value, password.value)"
+      name="login">
+      Login
+    </button>
+    <button type="button" class="button">
+      <a routerLink="../register">
+        Register
+      </a>
+    </button>
+  </div>
+</div>
